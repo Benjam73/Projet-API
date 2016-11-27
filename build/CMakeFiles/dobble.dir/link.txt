@@ -1,0 +1,1 @@
+/usr/bin/cc     CMakeFiles/dobble.dir/src/GestionGraphique.c.o CMakeFiles/dobble.dir/src/Dobble.c.o  -o dobble -rdynamic -lm -lSDL2 -lSDL2_image -lSDL2 -lSDL2_ttf -lSDL2 -lSDL2_image -lSDL2_ttf 

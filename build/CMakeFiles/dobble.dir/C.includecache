@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/GestionGraphique.h
+
+../include/dobble.h
+
+/home/enzo/Documents/RICM3/C/Projet/src/Dobble.c
+stdio.h
+-
+stdlib.h
+-
+GestionGraphique.h
+/home/enzo/Documents/RICM3/C/Projet/src/GestionGraphique.h
+math.h
+-
+dobble.h
+/home/enzo/Documents/RICM3/C/Projet/src/dobble.h
+stdbool.h
+-
+
+/home/enzo/Documents/RICM3/C/Projet/src/GestionGraphique.c
+GestionGraphique.h
+/home/enzo/Documents/RICM3/C/Projet/src/GestionGraphique.h
+SDL2/SDL.h
+-
+SDL2/SDL_image.h
+-
+SDL2/SDL_ttf.h
+-
+stdbool.h
+-
+dobble.h
+/home/enzo/Documents/RICM3/C/Projet/src/dobble.h
+
