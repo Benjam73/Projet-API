@@ -4,6 +4,12 @@
 #include <math.h>
 #include "dobble.h"
 #include <stdbool.h>
+<<<<<<< HEAD
+#include <unistd.h>
+
+int TEMPS = 30;
+=======
+>>>>>>> 72dffba199016cc5347b788a2f3e2653e29cca8e
 
 
 void LaSourisBouge( int x, int y)
@@ -34,7 +40,19 @@ void UnBoutonEstClique()
 // PROCEDURE APPELLE CHAQUE SECONDE A PARTIR DU MOMENT OU LE COMPTE A REBOURS EST LANCE
 void CompteARebours()
 {
+<<<<<<< HEAD
+	if(TEMPS > 0) {
+		printf("\n click \n");
+		TEMPS=TEMPS -1 ;
+		AfficheSceneComplete();
+	} else {
+		ArreteCompteARebours(); 
+	}
+
+	
+=======
 	printf("\nclick\n");
+>>>>>>> 72dffba199016cc5347b788a2f3e2653e29cca8e
 }
 
 // MISE A JOUR DE L'AFFICHAGE
@@ -46,15 +64,28 @@ void AfficheSceneComplete()
 {
 	char Message[100];
 // INITIALISE LE TITRE QUI SERA AFFICHE. UTILE POUR AFFICHER LE SCORE
+<<<<<<< HEAD
+	if(TEMPS != 0) {
+		sprintf( Message, "Dobble projet   Score %d ,   Temps : %i  ", 100, TEMPS);
+	} else {
+		sprintf( Message, "Dobble projet   Score %d ,   Temps ecoule  ", 100);
+	}
+	InitialiseTitre(Message);
+=======
 	sprintf( Message, "Dobble, hein voila    Score %d", 100);
 	InitialiseTitre(Message);
 
+>>>>>>> 72dffba199016cc5347b788a2f3e2653e29cca8e
 // EFFACE LA FENETRE
 	EffaceFenetre();
 
 // AFFICHE LE TITRE (MESSAGE INITIALISEE PAR LA PROCEDURE InitialiseTexte APPELLEE PLUS HAUT
 	AfficheTitre();
+<<<<<<< HEAD
+	
+=======
 
+>>>>>>> 72dffba199016cc5347b788a2f3e2653e29cca8e
 // AFFICHE DES ICONES DANS LA CARTE DU HAUT, DISPOSEES REGULIEREMENT EN CERCLE
 	PositionCarte OuEstLaCarte = CarteDuHaut;
 	int NumeroDIcone = 1;
@@ -62,21 +93,37 @@ void AfficheSceneComplete()
 
 	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
 		double Rotation = sin(Angle)*Angle+120.;
+<<<<<<< HEAD
+		double Taille = 0.8;
+		AfficheIcone( OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
+	}
+// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU HAUT
+	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 0.8);
+=======
 		double Taille = 1.;
 		AfficheIcone( OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
 	}
 // AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU HAUT
 	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 1.0);
+>>>>>>> 72dffba199016cc5347b788a2f3e2653e29cca8e
 
 // AFFICHE DES ICONES DANS LA CARTE DU BAS, DISPOSEES REGULIEREMENT EN CERCLE
 	OuEstLaCarte = CarteDuBas;
 	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
 		double Rotation = sin(Angle)*Angle+70.;
+<<<<<<< HEAD
+		double Taille = 0.8;
+		AfficheIcone( OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
+	}
+// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU BAS
+	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 0.8);
+=======
 		double Taille = 1.;
 		AfficheIcone( OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
 	}
 // AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU BAS
 	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 1.0);
+>>>>>>> 72dffba199016cc5347b788a2f3e2653e29cca8e
 
 // MET AU PREMIER PLAN LA FENETRE D ARRIERE PLAN QUI VIENT D ETRE MISE A JOUR
 	MontreFenetre();

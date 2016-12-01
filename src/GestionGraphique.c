@@ -9,6 +9,10 @@
 #include "dobble.h"
 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 72dffba199016cc5347b788a2f3e2653e29cca8e
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 
@@ -73,8 +77,14 @@ int InitialiseTitre(const char *Message)
 Uint32 MonTimer(Uint32 IntervalleDAvant, void *Param)
 {
 	// APPEL DE LA PROCEDURE CompteARebours SPECIFIEE DANS Dobble.h ET IMPLEMENTEE DANS Dobble.c
+<<<<<<< HEAD
+	
+	CompteARebours();
+	
+=======
 	CompteARebours();
 
+>>>>>>> 72dffba199016cc5347b788a2f3e2653e29cca8e
 	// SI L'ARRET DU COMPTE A REBOURS A ETE DEMANDE, ALORS RETOURNE UNE VALEUR DE 0 SINON RETOURNE LA MEME VALEUR IntervalleAvant
 	if (DemandeArretCompteARebours) {
 		CompteAReboursLance = false;
@@ -107,8 +117,13 @@ int InitialiseGraphique()
 {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
 
+<<<<<<< HEAD
+	window = SDL_CreateWindow("Dobble - Benjam,ZozoLeTigre",
+		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 700, 0);
+=======
 	window = SDL_CreateWindow("Dobble - Benjam, ZozoLeTigre",
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 600, 700, 0);
+>>>>>>> 72dffba199016cc5347b788a2f3e2653e29cca8e
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_TARGETTEXTURE);
 
         int imgFlags = IMG_INIT_PNG;
@@ -126,7 +141,11 @@ int InitialiseGraphique()
 
 
 	int TaillePoliceCaractere = 30;
+<<<<<<< HEAD
+	police = TTF_OpenFont("../data/FONTS/Chalkduster.ttf", TaillePoliceCaractere);
+=======
 	police = TTF_OpenFont("../data/FONTS/Amarillo.ttf", TaillePoliceCaractere);
+>>>>>>> 72dffba199016cc5347b788a2f3e2653e29cca8e
 	if (police == NULL) {
 		printf("echec du chargement de la police de caracteres\n");
 		return -1;
@@ -217,6 +236,30 @@ void LisEtDispatchEvenement()
 
 	while (!quit)
 	{
+<<<<<<< HEAD
+		if(SDL_PollEvent(&Evenement)){
+
+			switch (Evenement.type)
+			{
+				case SDL_MOUSEMOTION:
+					// rajouter ici le test "souris sur un pixel non transparent"
+					LaSourisBouge( Evenement.motion.x, Evenement.motion.y);
+					break;
+				case SDL_MOUSEBUTTONDOWN:
+					UnBoutonEstClique();
+					break;
+				case SDL_WINDOWEVENT:
+					AfficheSceneComplete();
+					break;
+				case SDL_QUIT:
+					printf("au revoir\n");
+					quit = 1;
+				break;
+			}
+
+		} else {
+			AfficheSceneComplete();
+=======
 		SDL_WaitEvent(&Evenement);
 
 		switch (Evenement.type)
@@ -235,6 +278,7 @@ void LisEtDispatchEvenement()
 				printf("au revoir\n");
 				quit = 1;
 				break;
+>>>>>>> 72dffba199016cc5347b788a2f3e2653e29cca8e
 		}
 	}
 }
