@@ -41,7 +41,7 @@ void CompteARebours()
 	if(TEMPS > 0) {
 		printf("\n click \n");
 		TEMPS=TEMPS -1 ;
-		AfficheSceneComplete();
+		//AfficheSceneComplete();
 	} else {
 		ArreteCompteARebours(); 
 	}
@@ -57,13 +57,14 @@ void AfficheSceneComplete()
 	char Message[100];
 
 	// INITIALISE LE TITRE QUI SERA AFFICHE. UTILE POUR AFFICHER LE SCORE
-	sprintf( Message, "Dobble, Benjamin Enzo   Score %d", 100);
-	InitialiseTitre(Message);
+	//sprintf( Message, "Dobble, Benjamin Enzo   Score %d", 100);
+	//InitialiseTitre(Message);
 
-	if(TEMPS != 0) {
-		sprintf( Message, "Dobble projet   Score %d ,   Temps : %i  ", 100, TEMPS);
-	} else {
-		sprintf( Message, "Dobble projet   Score %d ,   Temps ecoule  ", 100);
+	if (TEMPS != 0){
+		sprintf( Message, "Score %d        Temps : %i  ", 100, TEMPS);
+	} 
+	else{
+		sprintf( Message, "Score %d        Temps ecoule  ", 100);
 	}
 	InitialiseTitre(Message);
 
@@ -73,7 +74,6 @@ void AfficheSceneComplete()
 	// AFFICHE LE TITRE (MESSAGE INITIALISEE PAR LA PROCEDURE InitialiseTexte APPELLEE PLUS HAUT
 	AfficheTitre();
 
-
 	// AFFICHE DES ICONES DANS LA CARTE DU HAUT, DISPOSEES REGULIEREMENT EN CERCLE
 	PositionCarte OuEstLaCarte = CarteDuHaut;
 	int NumeroDIcone = 1;
@@ -81,17 +81,17 @@ void AfficheSceneComplete()
 
 	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
 		double Rotation = sin(Angle)*Angle+120.;
-		double Taille = 0.8;
+		double Taille = 1.;
 		AfficheIcone( OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
 	}
 	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU HAUT
-	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 0.8);
+	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 1.0);
 
 	// AFFICHE DES ICONES DANS LA CARTE DU BAS, DISPOSEES REGULIEREMENT EN CERCLE
 	OuEstLaCarte = CarteDuBas;
 	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
 		double Rotation = sin(Angle)*Angle+70.;
-		double Taille = 0.8;
+		double Taille = 1.;
 		AfficheIcone( OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
 	}
 	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU BAS
@@ -101,8 +101,7 @@ void AfficheSceneComplete()
 	MontreFenetre();
 }
 
-int main(int argc, char ** argv)
-{
+int main(int argc, char ** argv){
 	if (InitialiseGraphique() != 1) {
 		printf("Echec de l initialisation de la librairie graphique\n");
 		return -1;

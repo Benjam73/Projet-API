@@ -216,9 +216,7 @@ void LisEtDispatchEvenement()
 	while (!quit)
 	{
 		if(SDL_PollEvent(&Evenement)){
-
-			switch (Evenement.type)
-			{
+			switch (Evenement.type){
 				case SDL_MOUSEMOTION:
 					// rajouter ici le test "souris sur un pixel non transparent"
 					LaSourisBouge( Evenement.motion.x, Evenement.motion.y);
