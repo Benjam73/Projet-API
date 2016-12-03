@@ -45,17 +45,17 @@ void CompteARebours()
 void AfficheSceneComplete()
 {
 	char Message[100];
-// INITIALISE LE TITRE QUI SERA AFFICHE. UTILE POUR AFFICHER LE SCORE
-	sprintf( Message, "Dobble, hein voila    Score %d", 100);
+	// INITIALISE LE TITRE QUI SERA AFFICHE. UTILE POUR AFFICHER LE SCORE
+	sprintf( Message, "Dobble, Benjamin Enzio   Score %d", 100);
 	InitialiseTitre(Message);
 
-// EFFACE LA FENETRE
+	// EFFACE LA FENETRE
 	EffaceFenetre();
 
-// AFFICHE LE TITRE (MESSAGE INITIALISEE PAR LA PROCEDURE InitialiseTexte APPELLEE PLUS HAUT
+	// AFFICHE LE TITRE (MESSAGE INITIALISEE PAR LA PROCEDURE InitialiseTexte APPELLEE PLUS HAUT
 	AfficheTitre();
 
-// AFFICHE DES ICONES DANS LA CARTE DU HAUT, DISPOSEES REGULIEREMENT EN CERCLE
+	// AFFICHE DES ICONES DANS LA CARTE DU HAUT, DISPOSEES REGULIEREMENT EN CERCLE
 	PositionCarte OuEstLaCarte = CarteDuHaut;
 	int NumeroDIcone = 1;
 	double Rayon = 120.;
@@ -63,22 +63,23 @@ void AfficheSceneComplete()
 	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
 		double Rotation = sin(Angle)*Angle+120.;
 		double Taille = 1.;
+		//printf("Num = %i\n", NumeroDIcone);
 		AfficheIcone( OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
 	}
-// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU HAUT
+	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU HAUT
 	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 1.0);
 
-// AFFICHE DES ICONES DANS LA CARTE DU BAS, DISPOSEES REGULIEREMENT EN CERCLE
+	// AFFICHE DES ICONES DANS LA CARTE DU BAS, DISPOSEES REGULIEREMENT EN CERCLE
 	OuEstLaCarte = CarteDuBas;
 	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
 		double Rotation = sin(Angle)*Angle+70.;
 		double Taille = 1.;
 		AfficheIcone( OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
 	}
-// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU BAS
+	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU BAS
 	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 1.0);
 
-// MET AU PREMIER PLAN LA FENETRE D ARRIERE PLAN QUI VIENT D ETRE MISE A JOUR
+	// MET AU PREMIER PLAN LA FENETRE D ARRIERE PLAN QUI VIENT D ETRE MISE A JOUR
 	MontreFenetre();
 }
 

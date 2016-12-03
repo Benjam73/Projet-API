@@ -107,8 +107,7 @@ int InitialiseGraphique()
 {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
 
-	window = SDL_CreateWindow("Dobble - Benjam, ZozoLeTigre",
-		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 600, 700, 0);
+	window = SDL_CreateWindow("Dobble - Benjam, ZozoLeTigre", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 600, 700, 0);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_TARGETTEXTURE);
 
         int imgFlags = IMG_INIT_PNG;
@@ -126,7 +125,7 @@ int InitialiseGraphique()
 
 
 	int TaillePoliceCaractere = 30;
-	police = TTF_OpenFont("../data/FONTS/Amarillo.ttf", TaillePoliceCaractere);
+	police = TTF_OpenFont("../data/FONTS/Chalkduster.ttf", TaillePoliceCaractere);
 	if (police == NULL) {
 		printf("echec du chargement de la police de caracteres\n");
 		return -1;
@@ -165,7 +164,6 @@ void MontreFenetre()
 void PositionIconeDansImage( int NumeroIcone, int *PosX, int *PosY)
 {
 	// Ici vous devrez calculer la position de l'icone #NumeroIcone dans l'image
-
 	*PosX = 0;
 	*PosY = 0;
 }
@@ -215,26 +213,33 @@ void LisEtDispatchEvenement()
 	SDL_Event Evenement;
 	SDL_Rect VoisinageSouris;
 
-	while (!quit)
-	{
-		SDL_WaitEvent(&Evenement);
-
-		switch (Evenement.type)
-		{
-			case SDL_MOUSEMOTION:
-				// rajouter ici le test "souris sur un pixel non transparent"
-				LaSourisBouge( Evenement.motion.x, Evenement.motion.y);
-				break;
-			case SDL_MOUSEBUTTONDOWN:
-				UnBoutonEstClique();
-				break;
-			case SDL_WINDOWEVENT:
-				AfficheSceneComplete();
-				break;
-			case SDL_QUIT:
-				printf("au revoir\n");
-				quit = 1;
-				break;
+	while (!quit){
+		if (SDL_PollEvent(&Evenement)){		
+			switch (Evenement.type){	
+				case SDL_MOUSEMOTION:
+					// rajouter ici le test "souris sur un pixel non transparent"
+					LaSourisBouge( Evenement.motion.x, Evenement.motion.y);
+					break;
+				case SDL_MOUSEBUTTONDOWN:
+					UnBoutonEstClique();
+					break;
+				case SDL_WINDOWEVENT:
+					AfficheSceneComplete();
+					break;
+				case SDL_QUIT:
+					printf("au revoir\n");
+					quit = 1;
+					break;
+				case SDL_KEYDOWN:
+					switch (Evenement.key.keysym.sym){
+						case SDLK_q:
+							printf("au revoir\n");
+							quit = 1;
+					}
+			}
+		}
+		else{
+			AfficheSceneComplete();
 		}
 	}
 }
