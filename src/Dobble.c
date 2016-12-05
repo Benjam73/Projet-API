@@ -47,6 +47,12 @@ void CompteARebours()
 	}
 }
 
+//Fonction qui prend un fichier.txt avec les lignes et qui renvoie les images correspondantes.
+void Lis_ligne(FILE* f){
+	
+}
+
+
 // MISE A JOUR DE L'AFFICHAGE
 // CETTE MISE A JOUR EST D'ABORD CALCULEE DANS UNE IMAGE D'ARRIERE PLAN
 // AVANT D'ETRE ENSUITE PLACEE AU PREMIER PLAN DANS LE DERNIER APPEL (CELUI DE LA PROCEDURE MontreFenetre)
@@ -57,14 +63,12 @@ void AfficheSceneComplete()
 	char Message[100];
 
 	// INITIALISE LE TITRE QUI SERA AFFICHE. UTILE POUR AFFICHER LE SCORE
-	//sprintf( Message, "Dobble, Benjamin Enzo   Score %d", 100);
-	//InitialiseTitre(Message);
-
+	
 	if (TEMPS != 0){
-		sprintf( Message, "Score %d        Temps : %i  ", 100, TEMPS);
+		sprintf( Message, " Dobble,Benjamin Enzo   Score %d Temps : %i  ", 100, TEMPS);
 	} 
 	else{
-		sprintf( Message, "Score %d        Temps ecoule  ", 100);
+		sprintf( Message, " Dobble,Benjamin Enzo   Score %d ", 100);
 	}
 	InitialiseTitre(Message);
 
@@ -73,10 +77,10 @@ void AfficheSceneComplete()
 
 	// AFFICHE LE TITRE (MESSAGE INITIALISEE PAR LA PROCEDURE InitialiseTexte APPELLEE PLUS HAUT
 	AfficheTitre();
-
+	
 	// AFFICHE DES ICONES DANS LA CARTE DU HAUT, DISPOSEES REGULIEREMENT EN CERCLE
 	PositionCarte OuEstLaCarte = CarteDuHaut;
-	int NumeroDIcone = 1;
+	int NumeroDIcone = 11;
 	double Rayon = 120.;
 
 	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
@@ -86,7 +90,7 @@ void AfficheSceneComplete()
 	}
 	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU HAUT
 	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 1.0);
-
+	
 	// AFFICHE DES ICONES DANS LA CARTE DU BAS, DISPOSEES REGULIEREMENT EN CERCLE
 	OuEstLaCarte = CarteDuBas;
 	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
@@ -107,7 +111,7 @@ int main(int argc, char ** argv){
 		return -1;
 	}
 
-	if (ChargeImage("../data/Matrice3x3_Icones90x90.png") != 1) {
+	if (ChargeImage("../data/Matrice8x10_Icones90x90.png") != 1) {
 		printf("echec du chargement de l'image\n");
 		return -1;
 	}

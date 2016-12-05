@@ -106,7 +106,7 @@ int InitialiseGraphique()
 {
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER);
 
-	window = SDL_CreateWindow("Dobble - Benjamin, Enzo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 600, 700, 0);
+	window = SDL_CreateWindow("Dobble - Benjamin, Enzo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 700, 0);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_TARGETTEXTURE);
 
         int imgFlags = IMG_INIT_PNG;
@@ -164,8 +164,8 @@ void MontreFenetre()
 void PositionIconeDansImage( int NumeroIcone, int *PosX, int *PosY)
 {
 	// Ici vous devrez calculer la position de l'icone #NumeroIcone dans l'image
-	*PosX = 0;
-	*PosY = 0;
+  	*PosX = 90*(NumeroIcone-1)% 900;//juste pour ce fichier
+	*PosY = 90*(NumeroIcone)-900;
 }
 
 // AFFICHE UNE ICONE SOIT DANS UNE DES DEUX CARTES (CarteDuHaut OU CarteDuBas)
@@ -198,7 +198,7 @@ void AfficheIcone( PositionCarte PosCarte, int NumeroIcone, double Rayon, double
 
 	// SDL_Rect UnRectangle = {OrigineX, OrigineY, TailleX, TailleY}
 
-	SDL_Rect srcrect = {OrigX, OrigY, 90, 90}; // DANS L IMAGE EN ENTREE
+	SDL_Rect srcrect = {OrigX, OrigY, 90,90}; // DANS L IMAGE EN ENTREE
 
 	SDL_Rect dstrect = {DestX, DestY, 90*Scale, 90*Scale}; // DANS LA FENETRE EN SORTIE (ATTENTION: CONVERSION IMPLICITE ENTRE FLOTTANT ET ENTIER)
 
