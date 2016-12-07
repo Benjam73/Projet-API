@@ -6,6 +6,7 @@ typedef enum{ CarteDuHaut, CarteDuBas} PositionCarte;
 // LIS UNE IMAGE SUR LE DISQUE DUR QUI CONTIENT TOUTES LES ICONES
 int ChargeImage(const char *NomDuFichier);
 
+
 // PAUSE PENDANT UNE DUREE INDIQUEE EN MILLISECONDES
 void Attends(unsigned long int Duree);
 
@@ -30,6 +31,8 @@ void MontreFenetre();
 // Rotation EST UN ANGLE EN DEGRES PERMETTANT DE TOURNER L ICONE AUTOUR DE SON CENTRE
 // Scale EST UN REEL PERMETTANT DE MODIFIER LA TAILLE DE L ICONE. Scale = 1 => TAILLE ORIGINALE (90) CONSERVEE
 void AfficheIcone( PositionCarte NumeroDeCarte, int NumeroDIcone, double Rayon, double Angle, double Rotation, double Scale);
+
+int Pas_pixel_transparent();
 
 // ATTENDS QU'UN EVENEMENT UTILISATEUR SOIT EMIS, PUIS REAGIT A CETTE EVENEMENT
 void LisEtDispatchEvenement();

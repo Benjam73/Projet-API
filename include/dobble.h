@@ -5,5 +5,5 @@ void AfficheSceneComplete();
 void LaSourisBouge(int x, int y);
 void UnBoutonEstClique();
 void CompteARebours();
-
+int Lis_ligne(FILE* f);
 #endif

@@ -48,8 +48,10 @@ void CompteARebours()
 }
 
 //Fonction qui prend un fichier.txt avec les lignes et qui renvoie les images correspondantes.
-void Lis_ligne(FILE* f){
-	
+int Lis_ligne(FILE* f){
+	int numero_image;
+	fscanf(f,"%d",&numero_image);
+	return numero_image;	
 }
 
 
@@ -80,29 +82,34 @@ void AfficheSceneComplete()
 	
 	// AFFICHE DES ICONES DANS LA CARTE DU HAUT, DISPOSEES REGULIEREMENT EN CERCLE
 	PositionCarte OuEstLaCarte = CarteDuHaut;
-	int NumeroDIcone = 11;
+	FILE* fichier = NULL;
+	fichier = fopen("../data/pg27.txt","r");	
+	int NumeroDIcone = Lis_ligne(fichier);
 	double Rayon = 120.;
 
 	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
 		double Rotation = sin(Angle)*Angle+120.;
 		double Taille = 1.;
 		AfficheIcone( OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
+		NumeroDIcone = Lis_ligne(fichier);
 	}
 	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU HAUT
 	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 1.0);
-	
+	NumeroDIcone = Lis_ligne(fichier);
 	// AFFICHE DES ICONES DANS LA CARTE DU BAS, DISPOSEES REGULIEREMENT EN CERCLE
 	OuEstLaCarte = CarteDuBas;
 	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
 		double Rotation = sin(Angle)*Angle+70.;
 		double Taille = 1.;
 		AfficheIcone( OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
+		NumeroDIcone = Lis_ligne(fichier);
 	}
 	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU BAS
 	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 1.0);
 
 	// MET AU PREMIER PLAN LA FENETRE D ARRIERE PLAN QUI VIENT D ETRE MISE A JOUR
 	MontreFenetre();
+	fclose(fichier);
 }
 
 int main(int argc, char ** argv){

@@ -16,7 +16,7 @@ static SDL_Texture *textureTexte = NULL;
 static int tw, th;
 
 static TTF_Font *police = NULL;
-
+SDL_Surface *image = NULL;
 static bool DemandeArretCompteARebours = false;
 static bool CompteAReboursLance = false;
 
@@ -27,7 +27,7 @@ static bool CompteAReboursLance = false;
 // AFFICHANT UNE ICONE DEFINIE PLUS BAS (procedure AfficheIcone)
 int ChargeImage(const char *NomDuFichier)
 {
-	SDL_Surface *image = NULL;
+	
 
 	printf("chargement de l image %s\n", NomDuFichier);
 	image = IMG_Load(NomDuFichier);
@@ -40,7 +40,36 @@ int ChargeImage(const char *NomDuFichier)
 
 	return 1;
 }
+Uint32 getpixel(SDL_Surface *surface, int x, int y)
+{
+    int bpp = surface->format->BytesPerPixel;
+    /* Here p is the address to the pixel we want to retrieve */
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 
+    switch(bpp) {
+    case 1:
+        return *p;
+        break;
+
+    case 2:
+        return *(Uint16 *)p;
+        break;
+
+    case 3:
+        if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+            return p[0] << 16 | p[1] << 8 | p[2];
+        else
+            return p[0] | p[1] << 8 | p[2] << 16;
+        break;
+
+    case 4:
+        return *(Uint32 *)p;
+        break;
+
+    default:
+        return 0;       /* shouldn't happen, but avoids warnings */
+    }
+}
 // DESSINE DANS L IMAGE textureTexte UN MESSAGE AVEC UNE POLICE DE CARACTERE
 int InitialiseTitre(const char *Message)
 {
@@ -164,8 +193,8 @@ void MontreFenetre()
 void PositionIconeDansImage( int NumeroIcone, int *PosX, int *PosY)
 {
 	// Ici vous devrez calculer la position de l'icone #NumeroIcone dans l'image
-  	*PosX = 90*(NumeroIcone-1)% 900;//juste pour ce fichier
-	*PosY = 90*(NumeroIcone)-900;
+  	*PosX = 90*(NumeroIcone)% 900;//juste pour ce fichier
+	*PosY = (NumeroIcone/10)*90;
 }
 
 // AFFICHE UNE ICONE SOIT DANS UNE DES DEUX CARTES (CarteDuHaut OU CarteDuBas)
@@ -205,6 +234,10 @@ void AfficheIcone( PositionCarte PosCarte, int NumeroIcone, double Rayon, double
 	SDL_RenderCopyEx(renderer, textureImage, &srcrect, &dstrect, Rotation, NULL, SDL_FLIP_NONE);
 }
 
+int Pas_pixel_transparent(){
+	SDL_Event Evenement;
+ 	return (getpixel(image,Evenement.motion.x,Evenement.motion.y) != 255); 	
+}
 // ATTENDS QU'UN EVENEMENT UTILISATEUR SOIT EMIS, PUIS REAGIT A CETTE EVENEMENT
 void LisEtDispatchEvenement()
 {
@@ -219,6 +252,11 @@ void LisEtDispatchEvenement()
 			switch (Evenement.type){
 				case SDL_MOUSEMOTION:
 					// rajouter ici le test "souris sur un pixel non transparent"
+					if(Pas_pixel_transparent){
+						printf(" \n pixel transparent \r \n");
+					} else {	
+						printf("\n pixel pas transparent \r \n");
+					}
 					LaSourisBouge( Evenement.motion.x, Evenement.motion.y);
 					break;
 				case SDL_MOUSEBUTTONDOWN:
