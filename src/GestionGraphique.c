@@ -220,7 +220,7 @@ void Hit_box(PositionCarte PosCarte, double Rayon, double Angle, double Scale){
 	*DestY = Rayon*sin(Angle/360.*(2.*M_PI)) + (CentreY-Scale*90./2.);
 		
 	//tracage de la hit box
-	//Draw_FillCircle(image,DestX,DestY,Scale/2,255);
+	
 
 }
 
