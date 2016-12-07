@@ -28,7 +28,7 @@ static bool CompteAReboursLance = false;
 int ChargeImage(const char *NomDuFichier)
 {
 	
-
+	
 	printf("chargement de l image %s\n", NomDuFichier);
 	image = IMG_Load(NomDuFichier);
 	if (image == NULL) {
@@ -40,36 +40,7 @@ int ChargeImage(const char *NomDuFichier)
 
 	return 1;
 }
-Uint32 getpixel(SDL_Surface *surface, int x, int y)
-{
-    int bpp = surface->format->BytesPerPixel;
-    /* Here p is the address to the pixel we want to retrieve */
-    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 
-    switch(bpp) {
-    case 1:
-        return *p;
-        break;
-
-    case 2:
-        return *(Uint16 *)p;
-        break;
-
-    case 3:
-        if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
-            return p[0] << 16 | p[1] << 8 | p[2];
-        else
-            return p[0] | p[1] << 8 | p[2] << 16;
-        break;
-
-    case 4:
-        return *(Uint32 *)p;
-        break;
-
-    default:
-        return 0;       /* shouldn't happen, but avoids warnings */
-    }
-}
 // DESSINE DANS L IMAGE textureTexte UN MESSAGE AVEC UNE POLICE DE CARACTERE
 int InitialiseTitre(const char *Message)
 {
@@ -234,10 +205,27 @@ void AfficheIcone( PositionCarte PosCarte, int NumeroIcone, double Rayon, double
 	SDL_RenderCopyEx(renderer, textureImage, &srcrect, &dstrect, Rotation, NULL, SDL_FLIP_NONE);
 }
 
-int Pas_pixel_transparent(){
-	SDL_Event Evenement;
- 	return (getpixel(image,Evenement.motion.x,Evenement.motion.y) != 255); 	
+void Hit_box(PositionCarte PosCarte, double Rayon, double Angle, double Scale){
+	int CentreX,CentreY;	
+	if (PosCarte == CarteDuHaut) {
+		CentreX = 300;
+		CentreY = 200;
+	} else {
+		CentreX = 300;
+		CentreY = 520;
+	}
+	int *DestX ;
+	int *DestY ;
+	*DestX = Rayon*cos(Angle/360.*(2.*M_PI)) + (CentreX-Scale*90./2.);
+	*DestY = Rayon*sin(Angle/360.*(2.*M_PI)) + (CentreY-Scale*90./2.);
+		
+	//tracage de la hit box
+	//Draw_FillCircle(image,DestX,DestY,Scale/2,255);
+
 }
+
+
+
 // ATTENDS QU'UN EVENEMENT UTILISATEUR SOIT EMIS, PUIS REAGIT A CETTE EVENEMENT
 void LisEtDispatchEvenement()
 {
@@ -252,11 +240,6 @@ void LisEtDispatchEvenement()
 			switch (Evenement.type){
 				case SDL_MOUSEMOTION:
 					// rajouter ici le test "souris sur un pixel non transparent"
-					if(Pas_pixel_transparent){
-						printf(" \n pixel transparent \r \n");
-					} else {	
-						printf("\n pixel pas transparent \r \n");
-					}
 					LaSourisBouge( Evenement.motion.x, Evenement.motion.y);
 					break;
 				case SDL_MOUSEBUTTONDOWN:
