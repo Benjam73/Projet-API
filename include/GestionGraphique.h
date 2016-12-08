@@ -3,6 +3,18 @@
 
 typedef enum{ CarteDuHaut, CarteDuBas} PositionCarte;
 
+typedef struct Carte Carte ; 
+struct Carte{
+	PositionCarte PosCarte ;
+	int NumeroDIcone ;
+	double Rayon ;
+	double Angle ; 
+	double Rotation ; 
+	double Scale ;
+	double Ordonnee ;
+	double Abscisse ;
+};
+
 // LIS UNE IMAGE SUR LE DISQUE DUR QUI CONTIENT TOUTES LES ICONES
 int ChargeImage(const char *NomDuFichier);
 
