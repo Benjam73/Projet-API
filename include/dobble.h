@@ -10,4 +10,6 @@ void Remplit_tableau(FILE* f);
 int TempsEcoule();
 void ChangeCompteARebours(int n);
 
+Carte InitialiseCarte (PositionCarte PosCarte, int NumeroDIcone, double Rayon, double Angle, double Rotation, double Scale);
+
 #endif

@@ -42,9 +42,9 @@ void MontreFenetre();
 //   Angle = 90 => L ICONE EST EN DESSOUS DU CENTRE
 // Rotation EST UN ANGLE EN DEGRES PERMETTANT DE TOURNER L ICONE AUTOUR DE SON CENTRE
 // Scale EST UN REEL PERMETTANT DE MODIFIER LA TAILLE DE L ICONE. Scale = 1 => TAILLE ORIGINALE (90) CONSERVEE
-void AfficheIcone( PositionCarte NumeroDeCarte, int NumeroDIcone, double Rayon, double Angle, double Rotation, double Scale);
+void AfficheIcone(Carte carte);
 
-void Centre_icone(PositionCarte NumeroDeCarte, double Rayon, double Angle, double Scale);
+void Centre_icone(Carte carte);
 
 // ATTENDS QU'UN EVENEMENT UTILISATEUR SOIT EMIS, PUIS REAGIT A CETTE EVENEMENT
 void LisEtDispatchEvenement();

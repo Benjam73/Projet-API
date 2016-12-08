@@ -161,11 +161,11 @@ void MontreFenetre()
 	SDL_RenderPresent(renderer);
 }
 
-void PositionIconeDansImage( int NumeroIcone, int *PosX, int *PosY)
+void PositionIconeDansImage(Carte carte, int *PosX, int *PosY)
 {
 	// Ici vous devrez calculer la position de l'icone #NumeroIcone dans l'image
-  	*PosX = 90*(NumeroIcone)% 900;//juste pour ce fichier
-	*PosY = (NumeroIcone/10)*90;
+  	*PosX = 90*(carte.NumeroDIcone)% 900;//juste pour ce fichier
+	*PosY = (carte.NumeroDIcone/10)*90;
 }
 
 // AFFICHE UNE ICONE SOIT DANS UNE DES DEUX CARTES (CarteDuHaut OU CarteDuBas)
@@ -176,11 +176,11 @@ void PositionIconeDansImage( int NumeroIcone, int *PosX, int *PosY)
 //   Angle = 90 => L ICONE EST EN DESSOUS DU CENTRE
 // Rotation EST UN ANGLE EN DEGRES PERMETTANT DE TOURNER L ICONE AUTOUR DE SON CENTRE
 // Scale EST UN REEL PERMETTANT DE MODIFIER LA TAILLE DE L ICONE. Scale = 1 => TAILLE ORIGINALE (90) CONSERVEE
-void AfficheIcone( PositionCarte PosCarte, int NumeroIcone, double Rayon, double Angle, double Rotation, double Scale)
+void AfficheIcone(Carte carte)
 {
 	int CentreX, CentreY;
 
-	if (PosCarte == CarteDuHaut) {
+	if (carte.PosCarte == CarteDuHaut) {
 		CentreX = 300;
 		CentreY = 200;
 	} else {
@@ -189,20 +189,20 @@ void AfficheIcone( PositionCarte PosCarte, int NumeroIcone, double Rayon, double
 	}
 
 	// ATTENTION AUX CONVERSIONS ENTRE FLOTTANTS DOUBLE PRECISION ET ENTIERS
-	int DestX = Rayon*cos(Angle/360.*(2.*M_PI)) + (CentreX-Scale*90./2.);
-	int DestY = Rayon*sin(Angle/360.*(2.*M_PI)) + (CentreY-Scale*90./2.);
+	int DestX = carte.Rayon*cos(carte.Angle/360.*(2.*M_PI)) + (CentreX-carte.Scale*90./2.);
+	int DestY = carte.Rayon*sin(carte.Angle/360.*(2.*M_PI)) + (CentreY-carte.Scale*90./2.);
 	int OrigX, OrigY;
 
 	// RECUPERATION DE LA POSITION DE L ICONE NumeroIcone DANS L IMAGE CONTENANT TOUTES LES ICONES
-	PositionIconeDansImage( NumeroIcone, &OrigX, &OrigY);
+	PositionIconeDansImage(carte, &OrigX, &OrigY);
 
 	// SDL_Rect UnRectangle = {OrigineX, OrigineY, TailleX, TailleY}
 
 	SDL_Rect srcrect = {OrigX, OrigY, 90,90}; // DANS L IMAGE EN ENTREE
 
-	SDL_Rect dstrect = {DestX, DestY, 90*Scale, 90*Scale}; // DANS LA FENETRE EN SORTIE (ATTENTION: CONVERSION IMPLICITE ENTRE FLOTTANT ET ENTIER)
+	SDL_Rect dstrect = {DestX, DestY, 90*carte.Scale, 90*carte.Scale}; // DANS LA FENETRE EN SORTIE (ATTENTION: CONVERSION IMPLICITE ENTRE FLOTTANT ET ENTIER)
 
-	SDL_RenderCopyEx(renderer, textureImage, &srcrect, &dstrect, Rotation, NULL, SDL_FLIP_NONE);
+	SDL_RenderCopyEx(renderer, textureImage, &srcrect, &dstrect, carte.Rotation, NULL, SDL_FLIP_NONE);
 }
 
 void LaPartieEstQuittee (){
@@ -219,9 +219,9 @@ void MauvaiseReponse(){
 	ChangeCompteARebours(-3);
 }
 
-void Hit_box(PositionCarte PosCarte, double Rayon, double Angle, double Scale){
+void Hit_box(Carte carte){
 	int CentreX,CentreY;	
-	if (PosCarte == CarteDuHaut) {
+	if (carte.PosCarte == CarteDuHaut) {
 		CentreX = 300;
 		CentreY = 200;
 	} else {
@@ -230,8 +230,8 @@ void Hit_box(PositionCarte PosCarte, double Rayon, double Angle, double Scale){
 	}
 	int *CentreIconeX ;
 	int *CentreIconeY ;
-	*CentreIconeX = Rayon*cos(Angle/360.*(2.*M_PI)) + (CentreX-Scale*90./2.);
-	*CentreIconeY = Rayon*sin(Angle/360.*(2.*M_PI)) + (CentreY-Scale*90./2.);
+	*CentreIconeX = carte.Rayon*cos(carte.Angle/360.*(2.*M_PI)) + (CentreX-carte.Scale*90./2.);
+	*CentreIconeY = carte.Rayon*sin(carte.Angle/360.*(2.*M_PI)) + (CentreY-carte.Scale*90./2.);
 		
 	//tracage de la hit box
 	

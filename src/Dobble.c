@@ -65,7 +65,7 @@ void Remplit_tableau(FILE* f){
 	int i=0;
 	int j;
 	fscanf(f,"%c",&numero_image);	
-	while(numero_image != EOF) {
+	while(!feof(f)) {
 		for(j=0;j!=nb_coll;j++){
 			mesIcone[i][j]=numero_image;
 			fscanf(f,"%c",&numero_image);
@@ -75,6 +75,31 @@ void Remplit_tableau(FILE* f){
 	nb_ligne=i;
 }
 
+
+Carte InitialiseCarte (PositionCarte PosCarte, int NumeroDIcone, double Rayon, double Angle, double Rotation, double Scale){
+	Carte carte ;
+	carte.PosCarte = PosCarte;
+	carte.NumeroDIcone = NumeroDIcone;
+	carte.Rayon = Rayon;
+	carte.Angle = Angle;
+	carte.Rotation = Rotation;
+	carte.Scale = Scale;
+	
+	int CentreX, CentreY;
+	if (carte.PosCarte == CarteDuHaut) {
+		CentreX = 300;
+		CentreY = 200;
+	} else {
+		CentreX = 300;
+		CentreY = 520;
+	}
+
+	// ATTENTION AUX CONVERSIONS ENTRE FLOTTANTS DOUBLE PRECISION ET ENTIERS
+	carte.Abscisse = carte.Rayon*cos(carte.Angle/360.*(2.*M_PI)) + (CentreX-carte.Scale*90./2.);
+	carte.Ordonnee = carte.Rayon*sin(carte.Angle/360.*(2.*M_PI)) + (CentreY-carte.Scale*90./2.);
+
+	return carte ;
+}
 
 // MISE A JOUR DE L'AFFICHAGE
 // CETTE MISE A JOUR EST D'ABORD CALCULEE DANS UNE IMAGE D'ARRIERE PLAN
@@ -101,31 +126,48 @@ void AfficheSceneComplete()
 	// AFFICHE LE TITRE (MESSAGE INITIALISEE PAR LA PROCEDURE InitialiseTexte APPELLEE PLUS HAUT
 	AfficheTitre();
 	
-	// AFFICHE DES ICONES DANS LA CARTE DU HAUT, DISPOSEES REGULIEREMENT EN CERCLE
-	PositionCarte OuEstLaCarte = CarteDuHaut;
+	// AFFICHE DES ICONES DANS LA CARTE DU HAUT, DISPOSEES REGULIEREMENT EN CERCLE	PositionCarte OuEstLaCarte = CarteDuHaut;
 		
-	int NumeroDIcone =1;
+	int NumeroDIcone = 0;
 	double Rayon = 120.;
-
+	
+	PositionCarte OuEstLaCarte = CarteDuHaut;
+	Carte carte ; 
+		
 	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
 		double Rotation = sin(Angle)*Angle+120.;
 		double Taille = 1.;
-		AfficheIcone( OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
+		double Scale = 1;
+		carte = InitialiseCarte(OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Scale);
+		AfficheIcone(carte);
+		NumeroDIcone++;
 		//NumeroDIcone = Lis_ligne(fichier);
 	}
 	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU HAUT
-	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 1.0);
+	carte.Rayon = 0. ;
+	carte.Angle = 0. ;
+	carte.Rotation = 0. ;
+	carte.Scale = 1.0;
+	AfficheIcone(carte);
 	//NumeroDIcone = Lis_ligne(fichier);
 	// AFFICHE DES ICONES DANS LA CARTE DU BAS, DISPOSEES REGULIEREMENT EN CERCLE
 	OuEstLaCarte = CarteDuBas;
+	NumeroDIcone = 0 ;
 	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
 		double Rotation = sin(Angle)*Angle+70.;
 		double Taille = 1.;
-		AfficheIcone( OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
+		double Scale = 1;
+		carte = InitialiseCarte(OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Scale);
+		AfficheIcone(carte);
 		//NumeroDIcone = Lis_ligne(fichier);
+		NumeroDIcone++;
 	}
 	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU BAS
-	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 1.0);
+	carte.Rayon = 0. ;
+	carte.Angle = 0. ;
+	carte.Rotation = 0. ;
+	carte.Scale = 1.0;
+	AfficheIcone(carte);
 
 	// MET AU PREMIER PLAN LA FENETRE D ARRIERE PLAN QUI VIENT D ETRE MISE A JOUR
 	MontreFenetre();
