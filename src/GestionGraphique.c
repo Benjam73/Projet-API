@@ -228,13 +228,13 @@ void Hit_box(PositionCarte PosCarte, double Rayon, double Angle, double Scale){
 		CentreX = 300;
 		CentreY = 520;
 	}
-	int *DestX ;
-	int *DestY ;
-	*DestX = Rayon*cos(Angle/360.*(2.*M_PI)) + (CentreX-Scale*90./2.);
-	*DestY = Rayon*sin(Angle/360.*(2.*M_PI)) + (CentreY-Scale*90./2.);
+	int *CentreIconeX ;
+	int *CentreIconeY ;
+	*CentreIconeX = Rayon*cos(Angle/360.*(2.*M_PI)) + (CentreX-Scale*90./2.);
+	*CentreIconeY = Rayon*sin(Angle/360.*(2.*M_PI)) + (CentreY-Scale*90./2.);
 		
 	//tracage de la hit box
-	///cedvrvrtfvbtgr
+	
 
 }
 
@@ -260,7 +260,7 @@ void LisEtDispatchEvenement()
 					LaSourisBouge( Evenement.motion.x, Evenement.motion.y);
 					break;
 				case SDL_MOUSEBUTTONDOWN:
-					UnBoutonEstClique();
+					UnBoutonEstClique(Evenement.motion.x, Evenement.motion.y);
 					break;
 				case SDL_WINDOWEVENT:
 					AfficheSceneComplete();
