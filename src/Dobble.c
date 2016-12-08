@@ -8,7 +8,9 @@
 
 int TEMPS = 30;
 
-
+int TempsEcoule(){
+	return TEMPS <= 0 ;
+}
 
 void LaSourisBouge( int x, int y)
 {
@@ -38,13 +40,16 @@ void UnBoutonEstClique()
 // PROCEDURE APPELLE CHAQUE SECONDE A PARTIR DU MOMENT OU LE COMPTE A REBOURS EST LANCE
 void CompteARebours()
 {
+	 
 	if(TEMPS > 0) {
-		printf("\n click \n");
 		TEMPS=TEMPS -1 ;
-		//AfficheSceneComplete();
 	} else {
 		ArreteCompteARebours(); 
 	}
+}
+
+void ChangeCompteARebours(int n){
+	TEMPS = TEMPS+n;
 }
 
 //Fonction qui prend un fichier.txt avec les lignes et qui renvoie les images correspondantes.
@@ -66,7 +71,7 @@ void AfficheSceneComplete()
 
 	// INITIALISE LE TITRE QUI SERA AFFICHE. UTILE POUR AFFICHER LE SCORE
 	
-	if (TEMPS != 0){
+	if (!TempsEcoule()){
 		sprintf( Message, " Dobble,Benjamin Enzo   Score %d Temps : %i  ", 100, TEMPS);
 	} 
 	else{

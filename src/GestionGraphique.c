@@ -205,6 +205,20 @@ void AfficheIcone( PositionCarte PosCarte, int NumeroIcone, double Rayon, double
 	SDL_RenderCopyEx(renderer, textureImage, &srcrect, &dstrect, Rotation, NULL, SDL_FLIP_NONE);
 }
 
+void LaPartieEstQuittee (){
+	printf("Au revoir \n");
+}
+
+void BonneReponse(){
+	printf("Bonne réponse\n");
+	ChangeCompteARebours(3);	
+}
+
+void MauvaiseReponse(){
+	printf("Mauvaise réponse\n");
+	ChangeCompteARebours(-3);
+}
+
 void Hit_box(PositionCarte PosCarte, double Rayon, double Angle, double Scale){
 	int CentreX,CentreY;	
 	if (PosCarte == CarteDuHaut) {
@@ -236,10 +250,13 @@ void LisEtDispatchEvenement()
 
 	while (!quit)
 	{
+		if (TempsEcoule()){
+			LaPartieEstQuittee();
+			quit = 1;
+		}
 		if(SDL_PollEvent(&Evenement)){
 			switch (Evenement.type){
 				case SDL_MOUSEMOTION:
-					// rajouter ici le test "souris sur un pixel non transparent"
 					LaSourisBouge( Evenement.motion.x, Evenement.motion.y);
 					break;
 				case SDL_MOUSEBUTTONDOWN:
@@ -249,14 +266,21 @@ void LisEtDispatchEvenement()
 					AfficheSceneComplete();
 					break;
 				case SDL_QUIT:
-					printf("au revoir\n");
+					LaPartieEstQuittee();
 					quit = 1;
 					break;
 				case SDL_KEYDOWN:
 					switch (Evenement.key.keysym.sym){
 						case SDLK_q:
-							printf("au revoir\n");
+							LaPartieEstQuittee();
 							quit = 1;
+							break;
+						case SDLK_j:
+							BonneReponse();
+							break;
+						case SDLK_f:
+							MauvaiseReponse();
+							break;
 					}
 			}
 		}
