@@ -7,6 +7,9 @@
 #include <unistd.h>
 
 int TEMPS = 30;
+int nb_ligne;
+int nb_coll = 8;
+int mesIcone[1000][1000];
 
 int TempsEcoule(){
 	return TEMPS <= 0 ;
@@ -20,11 +23,15 @@ void LaSourisBouge( int x, int y)
 
 // UN CLICK: LE COMPTE A REBOURS EST LANCE
 // UN DEUXIEME CLICK: LE COMPTE A REBOURS EST ARRETE
-void UnBoutonEstClique()
+void UnBoutonEstClique(int x, int y)
 {
 	// VARIABLE PERMETTANT DE NE PAS RELANCER LE COMPTE-A-REBOURS AVANT DE L'AVOIR ARRETE
 	static bool Lance = false;
-
+	//if((x<PosX+45 && x>PosX-45) && (y<PosY+45 && y>PosY-45)) {
+	//	printf("bon clic \n");
+	//} else {
+	  //	printf("mauvais clic \n");
+	//}
 	printf("un bouton de souris est presse\n");
 	if (!Lance) {
 		printf("je lance le compte a rebours\n");
@@ -53,10 +60,19 @@ void ChangeCompteARebours(int n){
 }
 
 //Fonction qui prend un fichier.txt avec les lignes et qui renvoie les images correspondantes.
-int Lis_ligne(FILE* f){
-	int numero_image;
-	fscanf(f,"%d",&numero_image);
-	return numero_image;	
+void Remplit_tableau(FILE* f){
+	char numero_image;
+	int i=0;
+	int j;
+	fscanf(f,"%c",&numero_image);	
+	while(numero_image != EOF) {
+		for(j=0;j!=nb_coll;j++){
+			mesIcone[i][j]=numero_image;
+			fscanf(f,"%c",&numero_image);
+		}
+	i++;
+	}
+	nb_ligne=i;
 }
 
 
@@ -87,37 +103,41 @@ void AfficheSceneComplete()
 	
 	// AFFICHE DES ICONES DANS LA CARTE DU HAUT, DISPOSEES REGULIEREMENT EN CERCLE
 	PositionCarte OuEstLaCarte = CarteDuHaut;
-	FILE* fichier = NULL;
-	fichier = fopen("../data/pg27.txt","r");	
-	int NumeroDIcone = Lis_ligne(fichier);
+		
+	int NumeroDIcone =1;
 	double Rayon = 120.;
 
 	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
 		double Rotation = sin(Angle)*Angle+120.;
 		double Taille = 1.;
 		AfficheIcone( OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
-		NumeroDIcone = Lis_ligne(fichier);
+		//NumeroDIcone = Lis_ligne(fichier);
 	}
 	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU HAUT
 	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 1.0);
-	NumeroDIcone = Lis_ligne(fichier);
+	//NumeroDIcone = Lis_ligne(fichier);
 	// AFFICHE DES ICONES DANS LA CARTE DU BAS, DISPOSEES REGULIEREMENT EN CERCLE
 	OuEstLaCarte = CarteDuBas;
 	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
 		double Rotation = sin(Angle)*Angle+70.;
 		double Taille = 1.;
 		AfficheIcone( OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
-		NumeroDIcone = Lis_ligne(fichier);
+		//NumeroDIcone = Lis_ligne(fichier);
 	}
 	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU BAS
 	AfficheIcone( OuEstLaCarte, NumeroDIcone, 0., 0., 0., 1.0);
 
 	// MET AU PREMIER PLAN LA FENETRE D ARRIERE PLAN QUI VIENT D ETRE MISE A JOUR
 	MontreFenetre();
-	fclose(fichier);
+	
 }
 
 int main(int argc, char ** argv){
+	FILE* fichier = NULL;
+	fichier = fopen("../data/pg27.txt","r");
+	Remplit_tableau(fichier);
+	fclose(fichier);	
+
 	if (InitialiseGraphique() != 1) {
 		printf("Echec de l initialisation de la librairie graphique\n");
 		return -1;

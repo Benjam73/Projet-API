@@ -3,9 +3,9 @@
 
 void AfficheSceneComplete();
 void LaSourisBouge(int x, int y);
-void UnBoutonEstClique();
+void UnBoutonEstClique(int x, int y);
 void CompteARebours();
-int Lis_ligne(FILE* f);
+void Remplit_tableau(FILE* f);
 
 int TempsEcoule();
 void ChangeCompteARebours(int n);
