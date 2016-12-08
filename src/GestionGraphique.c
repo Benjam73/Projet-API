@@ -211,33 +211,14 @@ void LaPartieEstQuittee (){
 
 void BonneReponse(){
 	printf("Bonne réponse\n");
-	ChangeCompteARebours(3);	
+	ChangeCompteARebours(3);
+	AugmenterScore();	
 }
 
 void MauvaiseReponse(){
 	printf("Mauvaise réponse\n");
 	ChangeCompteARebours(-3);
 }
-
-void Hit_box(Carte carte){
-	int CentreX,CentreY;	
-	if (carte.PosCarte == CarteDuHaut) {
-		CentreX = 300;
-		CentreY = 200;
-	} else {
-		CentreX = 300;
-		CentreY = 520;
-	}
-	int *CentreIconeX ;
-	int *CentreIconeY ;
-	*CentreIconeX = carte.Rayon*cos(carte.Angle/360.*(2.*M_PI)) + (CentreX-carte.Scale*90./2.);
-	*CentreIconeY = carte.Rayon*sin(carte.Angle/360.*(2.*M_PI)) + (CentreY-carte.Scale*90./2.);
-		
-	//tracage de la hit box
-	
-
-}
-
 
 
 // ATTENDS QU'UN EVENEMENT UTILISATEUR SOIT EMIS, PUIS REAGIT A CETTE EVENEMENT

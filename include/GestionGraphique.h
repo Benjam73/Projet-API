@@ -44,8 +44,9 @@ void MontreFenetre();
 // Scale EST UN REEL PERMETTANT DE MODIFIER LA TAILLE DE L ICONE. Scale = 1 => TAILLE ORIGINALE (90) CONSERVEE
 void AfficheIcone(Carte carte);
 
-void Centre_icone(Carte carte);
+void BonneReponse();
 
+void MauvaiseReponse();
 // ATTENDS QU'UN EVENEMENT UTILISATEUR SOIT EMIS, PUIS REAGIT A CETTE EVENEMENT
 void LisEtDispatchEvenement();
 

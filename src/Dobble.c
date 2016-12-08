@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "GestionGraphique.h"
 #include <math.h>
+#include <time.h>
 #include "dobble.h"
 #include <stdbool.h>
 #include <unistd.h>
@@ -9,7 +10,12 @@
 int TEMPS = 30;
 int nb_ligne;
 int nb_coll = 8;
+int ligne_courante;
+int icone_commun;
 int mesIcone[1000][1000];
+int Icone_commun;
+int X_iconeCommun,Y_iconeCommun;
+int Score = 100;
 
 int TempsEcoule(){
 	return TEMPS <= 0 ;
@@ -27,22 +33,25 @@ void UnBoutonEstClique(int x, int y)
 {
 	// VARIABLE PERMETTANT DE NE PAS RELANCER LE COMPTE-A-REBOURS AVANT DE L'AVOIR ARRETE
 	static bool Lance = false;
-	//if((x<PosX+45 && x>PosX-45) && (y<PosY+45 && y>PosY-45)) {
-	//	printf("bon clic \n");
-	//} else {
-	  //	printf("mauvais clic \n");
-	//}
-	printf("un bouton de souris est presse\n");
+	
 	if (!Lance) {
 		printf("je lance le compte a rebours\n");
 		LanceCompteARebours();
 		Lance = true;
-	} else {
-		printf("j arrete le compte a rebours\n");
-		Lance = false;
-		ArreteCompteARebours();
 	}
+	
+	printf(" coordonne X : %d ; coordonne Y : %d \n",X_iconeCommun,Y_iconeCommun);
+	if((x<X_iconeCommun+45 && x>X_iconeCommun-45) && (y<Y_iconeCommun + 45 && y>Y_iconeCommun - 45)) {
+		printf("bon clic \n");
+		ligne_courante_random();
+		BonneReponse();
+	} else {
+	 	printf("mauvais clic \n");
+		MauvaiseReponse();
+	}
+	AfficheSceneComplete();
 }
+
 
 // PROCEDURE APPELLE CHAQUE SECONDE A PARTIR DU MOMENT OU LE COMPTE A REBOURS EST LANCE
 void CompteARebours()
@@ -59,22 +68,36 @@ void ChangeCompteARebours(int n){
 	TEMPS = TEMPS+n;
 }
 
-//Fonction qui prend un fichier.txt avec les lignes et qui renvoie les images correspondantes.
-void Remplit_tableau(FILE* f){
-	char numero_image;
-	int i=0;
-	int j;
-	fscanf(f,"%c",&numero_image);	
-	while(!feof(f)) {
-		for(j=0;j!=nb_coll;j++){
-			mesIcone[i][j]=numero_image;
-			fscanf(f,"%c",&numero_image);
-		}
-	i++;
-	}
-	nb_ligne=i;
+void AugmenterScore() {
+	Score=Score + 10;
 }
 
+//Fonction qui prend un fichier.txt avec les lignes et qui renvoie les images correspondantes.
+void Remplit_tableau(FILE* f){
+	int numero_image;
+	int i=0;
+	int j;
+	while(!feof(f)) {
+		for(j=0;j!=nb_coll;j++){	
+			fscanf(f,"%d",&numero_image);
+			mesIcone[i][j]=numero_image;
+		}	
+		i++;
+	}
+	nb_ligne=i-1;
+}
+
+void incone_commun(){
+	int i,j;	
+	for (i=0;i!=nb_coll;i++) {
+		for(j=0;j!=nb_coll;j++){
+			if(mesIcone[ligne_courante][i] == mesIcone[ligne_courante+1][j]){
+	  			Icone_commun=mesIcone[ligne_courante][i];
+				
+			}
+		}
+	}
+}
 
 Carte InitialiseCarte (PositionCarte PosCarte, int NumeroDIcone, double Rayon, double Angle, double Rotation, double Scale){
 	Carte carte ;
@@ -95,8 +118,8 @@ Carte InitialiseCarte (PositionCarte PosCarte, int NumeroDIcone, double Rayon, d
 	}
 
 	// ATTENTION AUX CONVERSIONS ENTRE FLOTTANTS DOUBLE PRECISION ET ENTIERS
-	carte.Abscisse = carte.Rayon*cos(carte.Angle/360.*(2.*M_PI)) + (CentreX-carte.Scale*90./2.);
-	carte.Ordonnee = carte.Rayon*sin(carte.Angle/360.*(2.*M_PI)) + (CentreY-carte.Scale*90./2.);
+	carte.Abscisse = carte.Rayon*cos(carte.Angle/360.*(2.*M_PI)) + CentreX;
+	carte.Ordonnee = carte.Rayon*sin(carte.Angle/360.*(2.*M_PI)) + CentreY;
 
 	return carte ;
 }
@@ -113,10 +136,10 @@ void AfficheSceneComplete()
 	// INITIALISE LE TITRE QUI SERA AFFICHE. UTILE POUR AFFICHER LE SCORE
 	
 	if (!TempsEcoule()){
-		sprintf( Message, " Dobble,Benjamin Enzo   Score %d Temps : %i  ", 100, TEMPS);
+		sprintf( Message, " Dobble    Score %d Temps : %i  ", Score, TEMPS);
 	} 
 	else{
-		sprintf( Message, " Dobble,Benjamin Enzo   Score %d ", 100);
+		sprintf( Message, " Dobble    Score %d ", Score);
 	}
 	InitialiseTitre(Message);
 
@@ -128,50 +151,63 @@ void AfficheSceneComplete()
 	
 	// AFFICHE DES ICONES DANS LA CARTE DU HAUT, DISPOSEES REGULIEREMENT EN CERCLE	PositionCarte OuEstLaCarte = CarteDuHaut;
 		
-	int NumeroDIcone = 0;
+	int NumeroDIcone = mesIcone[ligne_courante][0];;
 	double Rayon = 120.;
-	
+	double Angle = 0.;
 	PositionCarte OuEstLaCarte = CarteDuHaut;
 	Carte carte ; 
-		
-	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
-		double Rotation = sin(Angle)*Angle+120.;
-		double Taille = 1.;
-		double Scale = 1;
-		carte = InitialiseCarte(OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Scale);
+	int i;
+	double Rotation = sin(Angle)*Angle+120.;
+	double Taille = 0.8;
+	incone_commun();	
+	 for(i=1;i<nb_coll;i++){	
+		Rotation = sin(Angle)*Angle+120.;
+		carte = InitialiseCarte(OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
 		AfficheIcone(carte);
-		NumeroDIcone++;
-		//NumeroDIcone = Lis_ligne(fichier);
+		NumeroDIcone =mesIcone[ligne_courante][i];
+		Angle += 360./7.; 
 	}
 	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU HAUT
 	carte.Rayon = 0. ;
 	carte.Angle = 0. ;
 	carte.Rotation = 0. ;
-	carte.Scale = 1.0;
+	carte.Scale = 0.8;
+	carte.NumeroDIcone = NumeroDIcone;
 	AfficheIcone(carte);
-	//NumeroDIcone = Lis_ligne(fichier);
+	NumeroDIcone =mesIcone[ligne_courante+1][0];
+	printf("%d \r" ,NumeroDIcone);
 	// AFFICHE DES ICONES DANS LA CARTE DU BAS, DISPOSEES REGULIEREMENT EN CERCLE
 	OuEstLaCarte = CarteDuBas;
-	NumeroDIcone = 0 ;
-	for (double Angle = 0.; Angle < 360.; Angle += 360./7.) {
-		double Rotation = sin(Angle)*Angle+70.;
-		double Taille = 1.;
-		double Scale = 1;
-		carte = InitialiseCarte(OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Scale);
+	for(i=1;i<nb_coll;i++){	
+		Rotation = sin(Angle)*Angle+120.;
+		carte = InitialiseCarte(OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
 		AfficheIcone(carte);
-		//NumeroDIcone = Lis_ligne(fichier);
-		NumeroDIcone++;
+		if(NumeroDIcone==Icone_commun) {
+			X_iconeCommun = carte.Abscisse;
+			Y_iconeCommun = carte.Ordonnee;
+		}
+		NumeroDIcone =mesIcone[ligne_courante+1][i];
+		Angle += 360./7.; 
 	}
 	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU BAS
 	carte.Rayon = 0. ;
 	carte.Angle = 0. ;
 	carte.Rotation = 0. ;
-	carte.Scale = 1.0;
+	carte.Scale = 0.8;
+	carte.NumeroDIcone = NumeroDIcone;
 	AfficheIcone(carte);
-
+	if(NumeroDIcone==Icone_commun) {
+		X_iconeCommun = 300;
+		Y_iconeCommun = 520;
+	}
 	// MET AU PREMIER PLAN LA FENETRE D ARRIERE PLAN QUI VIENT D ETRE MISE A JOUR
 	MontreFenetre();
 	
+}
+
+void ligne_courante_random(){
+	ligne_courante=rand()%nb_ligne;
+
 }
 
 int main(int argc, char ** argv){
@@ -179,7 +215,8 @@ int main(int argc, char ** argv){
 	fichier = fopen("../data/pg27.txt","r");
 	Remplit_tableau(fichier);
 	fclose(fichier);	
-
+	srand(time(NULL));	
+	ligne_courante_random();
 	if (InitialiseGraphique() != 1) {
 		printf("Echec de l initialisation de la librairie graphique\n");
 		return -1;
