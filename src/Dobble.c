@@ -8,8 +8,9 @@
 #include <unistd.h>
 
 int TEMPS = 30;
+int nb_carte;
 int nb_ligne;
-int nb_coll = 8;
+int nb_coll;
 int ligne_courante;
 int icone_commun;
 int mesIcone[1000][1000];
@@ -83,7 +84,7 @@ void Remplit_tableau(FILE* f){
 		}	
 		i++;
 	}
-	nb_ligne=i-1;
+	nb_ligne=i-2;
 }
 
 void incone_commun(){
@@ -123,33 +124,8 @@ Carte InitialiseCarte (PositionCarte PosCarte, int NumeroDIcone, double Rayon, d
 	return carte ;
 }
 
-// MISE A JOUR DE L'AFFICHAGE
-// CETTE MISE A JOUR EST D'ABORD CALCULEE DANS UNE IMAGE D'ARRIERE PLAN
-// AVANT D'ETRE ENSUITE PLACEE AU PREMIER PLAN DANS LE DERNIER APPEL (CELUI DE LA PROCEDURE MontreFenetre)
-// CE PROCEDE CLASSIQUE EN GRAPHIQUE ASSURE QUE LES CHANGEMENTS APPARAISSENT INSTANTANEMENT A L OBSERVATEUR
-// QUELLE QUE SOIT LA DUREE PRISE POUR CALCULER LA NOUVELLE IMAGE EN ARRIERE PLAN
-void AfficheSceneComplete()
-{
-	char Message[100];
-
-	// INITIALISE LE TITRE QUI SERA AFFICHE. UTILE POUR AFFICHER LE SCORE
+void Afficher_HuitCartes(){
 	
-	if (!TempsEcoule()){
-		sprintf( Message, " Dobble    Score %d Temps : %i  ", Score, TEMPS);
-	} 
-	else{
-		sprintf( Message, " Dobble    Score %d ", Score);
-	}
-	InitialiseTitre(Message);
-
-	// EFFACE LA FENETRE
-	EffaceFenetre();
-
-	// AFFICHE LE TITRE (MESSAGE INITIALISEE PAR LA PROCEDURE InitialiseTexte APPELLEE PLUS HAUT
-	AfficheTitre();
-	
-	// AFFICHE DES ICONES DANS LA CARTE DU HAUT, DISPOSEES REGULIEREMENT EN CERCLE	PositionCarte OuEstLaCarte = CarteDuHaut;
-		
 	int NumeroDIcone = mesIcone[ligne_courante][0];;
 	double Rayon = 120.;
 	double Angle = 0.;
@@ -198,6 +174,146 @@ void AfficheSceneComplete()
 		X_iconeCommun = 300;
 		Y_iconeCommun = 520;
 	}
+
+}
+
+void Afficher_CinqCartes(){
+	int NumeroDIcone = mesIcone[ligne_courante][0];;
+	double Rayon = 100.;
+	double Angle = 0.;
+	PositionCarte OuEstLaCarte = CarteDuHaut;
+	Carte carte ; 
+	int i;
+	double Rotation = sin(Angle)*Angle+120.;
+	double Taille = 0.8;
+	incone_commun();	
+	 for(i=1;i<nb_coll;i++){	
+		Rotation = sin(Angle)*Angle+120.;
+		carte = InitialiseCarte(OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
+		AfficheIcone(carte);
+		NumeroDIcone =mesIcone[ligne_courante][i];
+		Angle += 360./4.; 
+	}
+	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU HAUT
+	carte.Rayon = 0. ;
+	carte.Angle = 0. ;
+	carte.Rotation = 0. ;
+	carte.Scale = 0.8;
+	carte.NumeroDIcone = NumeroDIcone;
+	AfficheIcone(carte);
+	NumeroDIcone =mesIcone[ligne_courante+1][0];
+	// AFFICHE DES ICONES DANS LA CARTE DU BAS, DISPOSEES REGULIEREMENT EN CERCLE
+	OuEstLaCarte = CarteDuBas;
+	for(i=1;i<nb_coll;i++){	
+		Rotation = sin(Angle)*Angle+120.;
+		carte = InitialiseCarte(OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
+		AfficheIcone(carte);
+		if(NumeroDIcone==Icone_commun) {
+			X_iconeCommun = carte.Abscisse;
+			Y_iconeCommun = carte.Ordonnee;
+		}
+		NumeroDIcone =mesIcone[ligne_courante+1][i];
+		Angle += 360./4.; 
+	}
+	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU BAS
+	carte.Rayon = 0. ;
+	carte.Angle = 0. ;
+	carte.Rotation = 0. ;
+	carte.Scale = 0.8;
+	carte.NumeroDIcone = NumeroDIcone;
+	AfficheIcone(carte);
+	if(NumeroDIcone==Icone_commun) {
+		X_iconeCommun = 300;
+		Y_iconeCommun = 520;
+	}
+}
+
+void Afficher_TroisCartes(){
+int NumeroDIcone = mesIcone[ligne_courante][0];;
+	double Rayon = 120.;
+	double Angle = 0.;
+	PositionCarte OuEstLaCarte = CarteDuHaut;
+	Carte carte ; 
+	int i;
+	double Rotation = sin(Angle)*Angle+120.;
+	double Taille = 0.8;
+	incone_commun();	
+	 for(i=1;i<nb_coll;i++){	
+		Rotation = sin(Angle)*Angle+120.;
+		carte = InitialiseCarte(OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
+		AfficheIcone(carte);
+		NumeroDIcone =mesIcone[ligne_courante][i];
+		Angle += 360./2.; 
+	}
+	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU HAUT
+	carte.Rayon = 0. ;
+	carte.Angle = 0. ;
+	carte.Rotation = 0. ;
+	carte.Scale = 0.8;
+	carte.NumeroDIcone = NumeroDIcone;
+	AfficheIcone(carte);
+	NumeroDIcone =mesIcone[ligne_courante+1][0];
+	// AFFICHE DES ICONES DANS LA CARTE DU BAS, DISPOSEES REGULIEREMENT EN CERCLE
+	OuEstLaCarte = CarteDuBas;
+	for(i=1;i<nb_coll;i++){	
+		Rotation = sin(Angle)*Angle+120.;
+		carte = InitialiseCarte(OuEstLaCarte, NumeroDIcone, Rayon, Angle, Rotation, Taille);
+		AfficheIcone(carte);
+		if(NumeroDIcone==Icone_commun) {
+			X_iconeCommun = carte.Abscisse;
+			Y_iconeCommun = carte.Ordonnee;
+		}
+		NumeroDIcone =mesIcone[ligne_courante+1][i];
+		Angle += 360./2.; 
+	}
+	// AFFICHE UNE ICONE AU CENTRE DE LA CARTE DU BAS
+	carte.Rayon = 0. ;
+	carte.Angle = 0. ;
+	carte.Rotation = 0. ;
+	carte.Scale = 0.8;
+	carte.NumeroDIcone = NumeroDIcone;
+	AfficheIcone(carte);
+	if(NumeroDIcone==Icone_commun) {
+		X_iconeCommun = 300;
+		Y_iconeCommun = 520;
+	}
+}
+// MISE A JOUR DE L'AFFICHAGE
+// CETTE MISE A JOUR EST D'ABORD CALCULEE DANS UNE IMAGE D'ARRIERE PLAN
+// AVANT D'ETRE ENSUITE PLACEE AU PREMIER PLAN DANS LE DERNIER APPEL (CELUI DE LA PROCEDURE MontreFenetre)
+// CE PROCEDE CLASSIQUE EN GRAPHIQUE ASSURE QUE LES CHANGEMENTS APPARAISSENT INSTANTANEMENT A L OBSERVATEUR
+// QUELLE QUE SOIT LA DUREE PRISE POUR CALCULER LA NOUVELLE IMAGE EN ARRIERE PLAN
+void AfficheSceneComplete()
+{
+	char Message[100];
+
+	// INITIALISE LE TITRE QUI SERA AFFICHE. UTILE POUR AFFICHER LE SCORE
+	
+	if (!TempsEcoule()){
+		sprintf( Message, " Dobble    Score %d Temps : %i  ", Score, TEMPS);
+	} 
+	else{
+		sprintf( Message, " Dobble    Score %d ", Score);
+	}
+	InitialiseTitre(Message);
+
+	// EFFACE LA FENETRE
+	EffaceFenetre();
+
+	// AFFICHE LE TITRE (MESSAGE INITIALISEE PAR LA PROCEDURE InitialiseTexte APPELLEE PLUS HAUT
+	AfficheTitre();
+	
+	// AFFICHE DES ICONES DANS LA CARTE DU HAUT, DISPOSEES REGULIEREMENT EN CERCLE	PositionCarte OuEstLaCarte = CarteDuHaut;
+	if(nb_carte==8){
+		Afficher_HuitCartes();
+	} 
+	if(nb_carte==5){
+		Afficher_CinqCartes();
+	}
+	if(nb_carte==3){
+		Afficher_TroisCartes();
+	}
+	
 	// MET AU PREMIER PLAN LA FENETRE D ARRIERE PLAN QUI VIENT D ETRE MISE A JOUR
 	MontreFenetre();
 	
@@ -210,16 +326,19 @@ void ligne_courante_random(){
 
 void permutation() {
 	int decalage=rand()%nb_coll;
-	int nb_decall=0;
+	int nb_decall;
 	int premier_ligne;
 	int i,j;
+	int y;
 	for(i =0; i<nb_ligne;i++){
-		for(nb_decall=0;nb_decall!=decalage;nb_decall++){		
+		for(nb_decall=0;nb_decall<decalage;nb_decall++){		
+						
 			premier_ligne=mesIcone[i][0];
+			
 			for(j=0;j<nb_coll;j++){
 				mesIcone[i][j]=mesIcone[i][j+1];
 			}		
-			mesIcone[i][j]=premier_ligne;
+			mesIcone[i][j-1]=premier_ligne;
 		}
 		decalage=rand()%nb_coll;
 	}
@@ -228,13 +347,30 @@ void permutation() {
 
 int main(int argc, char ** argv){
 	FILE* fichier = NULL;
-	fichier = fopen("../data/pg27.txt","r");
+	int i,j;
+	printf("Avec combien de carte voulez vous jouer ? 3 , 5 , 8 \n");
+	scanf("%i",&nb_carte);
+	nb_coll=nb_carte;
+	if(nb_carte==8){
+		fichier = fopen("../data/pg27.txt","r");
+	} 
+	if(nb_carte==5){
+		fichier = fopen("../data/pg24.txt","r");
+	}
+	if(nb_carte==3){
+		fichier = fopen("../data/pg22.txt","r");
+	}
 	Remplit_tableau(fichier);
 	fclose(fichier);	
 	srand(time(NULL));	
 	ligne_courante_random();
 	permutation();
-	
+	for(i=0;i<nb_ligne;i++){
+		for(j=0;j<nb_coll;j++){
+			printf(" %d ",mesIcone[i][j]);
+		}
+		printf("\n");
+	}
 	if (InitialiseGraphique() != 1) {
 		printf("Echec de l initialisation de la librairie graphique\n");
 		return -1;
