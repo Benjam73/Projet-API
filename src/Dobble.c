@@ -16,7 +16,7 @@ int icone_commun;
 int mesIcone[1000][1000];
 int Icone_commun;
 int X_iconeCommun,Y_iconeCommun;
-int Score = 100;
+int Score = 0;
 
 int TempsEcoule(){
 	return TEMPS <= 0 ;
@@ -69,7 +69,7 @@ void ChangeCompteARebours(int n){
 }
 
 void AugmenterScore() {
-	Score=Score + 10;
+	Score=Score + 1;
 }
 
 //Fonction qui prend un fichier.txt avec les lignes et qui renvoie les images correspondantes.
@@ -290,10 +290,10 @@ void AfficheSceneComplete()
 	// INITIALISE LE TITRE QUI SERA AFFICHE. UTILE POUR AFFICHER LE SCORE
 	
 	if (!TempsEcoule()){
-		sprintf( Message, " Dobble    Score %d Temps : %i  ", Score, TEMPS);
+		sprintf( Message, " Dobble Benjamin,Enzo   Score %d Temps : %i  ", Score, TEMPS);
 	} 
 	else{
-		sprintf( Message, " Dobble    Score %d ", Score);
+		sprintf( Message, " Dobble Benjamin,Enzo   Score %d ", Score);
 	}
 	InitialiseTitre(Message);
 
@@ -365,12 +365,7 @@ int main(int argc, char ** argv){
 	srand(time(NULL));	
 	ligne_courante_random();
 	permutation();
-	for(i=0;i<nb_ligne;i++){
-		for(j=0;j<nb_coll;j++){
-			printf(" %d ",mesIcone[i][j]);
-		}
-		printf("\n");
-	}
+	
 	if (InitialiseGraphique() != 1) {
 		printf("Echec de l initialisation de la librairie graphique\n");
 		return -1;
