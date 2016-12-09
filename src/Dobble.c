@@ -40,7 +40,6 @@ void UnBoutonEstClique(int x, int y)
 		Lance = true;
 	}
 	
-	printf(" coordonne X : %d ; coordonne Y : %d \n",X_iconeCommun,Y_iconeCommun);
 	if((x<X_iconeCommun+45 && x>X_iconeCommun-45) && (y<Y_iconeCommun + 45 && y>Y_iconeCommun - 45)) {
 		printf("bon clic \n");
 		ligne_courante_random();
@@ -175,7 +174,6 @@ void AfficheSceneComplete()
 	carte.NumeroDIcone = NumeroDIcone;
 	AfficheIcone(carte);
 	NumeroDIcone =mesIcone[ligne_courante+1][0];
-	printf("%d \r" ,NumeroDIcone);
 	// AFFICHE DES ICONES DANS LA CARTE DU BAS, DISPOSEES REGULIEREMENT EN CERCLE
 	OuEstLaCarte = CarteDuBas;
 	for(i=1;i<nb_coll;i++){	
@@ -210,6 +208,24 @@ void ligne_courante_random(){
 
 }
 
+void permutation() {
+	int decalage=rand()%nb_coll;
+	int nb_decall=0;
+	int premier_ligne;
+	int i,j;
+	for(i =0; i<nb_ligne;i++){
+		for(nb_decall=0;nb_decall!=decalage;nb_decall++){		
+			premier_ligne=mesIcone[i][0];
+			for(j=0;j<nb_coll;j++){
+				mesIcone[i][j]=mesIcone[i][j+1];
+			}		
+			mesIcone[i][j]=premier_ligne;
+		}
+		decalage=rand()%nb_coll;
+	}
+}
+
+
 int main(int argc, char ** argv){
 	FILE* fichier = NULL;
 	fichier = fopen("../data/pg27.txt","r");
@@ -217,6 +233,8 @@ int main(int argc, char ** argv){
 	fclose(fichier);	
 	srand(time(NULL));	
 	ligne_courante_random();
+	permutation();
+	
 	if (InitialiseGraphique() != 1) {
 		printf("Echec de l initialisation de la librairie graphique\n");
 		return -1;

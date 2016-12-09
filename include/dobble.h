@@ -11,7 +11,7 @@ void incone_commun();
 int TempsEcoule();
 void ChangeCompteARebours(int n);
 void ligne_courante_random();
-
+void permutation();
 Carte InitialiseCarte (PositionCarte PosCarte, int NumeroDIcone, double Rayon, double Angle, double Rotation, double Scale);
 
 #endif
