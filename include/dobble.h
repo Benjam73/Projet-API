@@ -15,6 +15,7 @@ void Afficher_TroisCartes();
 void ChangeCompteARebours(int n);
 void ligne_courante_random();
 void permutation();
+void AfficherScore();
 Carte InitialiseCarte (PositionCarte PosCarte, int NumeroDIcone, double Rayon, double Angle, double Rotation, double Scale);
 
 #endif

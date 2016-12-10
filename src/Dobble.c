@@ -343,7 +343,9 @@ void permutation() {
 		decalage=rand()%nb_coll;
 	}
 }
-
+void AfficherScore(){
+	printf("Partie terminé, Votre score : %d \n",Score);
+}
 
 int main(int argc, char ** argv){
 	FILE* fichier = NULL;

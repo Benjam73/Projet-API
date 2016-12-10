@@ -207,6 +207,7 @@ void AfficheIcone(Carte carte)
 
 void LaPartieEstQuittee (){
 	printf("Au revoir \n");
+	AfficherScore();
 }
 
 void BonneReponse(){
